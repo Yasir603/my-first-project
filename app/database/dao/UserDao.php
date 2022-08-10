@@ -158,4 +158,21 @@ class UserDao extends TableDao {
         return null;
     }
 
+
+    public function getUserWithPassword(string $password): ?UserEntity {
+        $query = QueryBuilder::withQueryType(QueryType::SELECT)
+            ->withTableName(UserEntity::TABLE_NAME)
+            ->columns(['*'])
+            ->whereParams([
+                [UserTableSchema::PASSWORD, '=', $this->escape_string($password)]
+            ])
+            ->generate();
+  
+        $result = mysqli_query($this->getConnection(), $query);
+
+        if ($result && $result->num_rows >= 1) {
+            return UserFactory::mapFromDatabaseResult(mysqli_fetch_assoc($result));
+        }
+        return null;
+    }
 }

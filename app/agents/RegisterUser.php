@@ -63,6 +63,7 @@ class RegisterUser extends ElectroApi {
             'uid' => $userEntity->getUid(),
             'username' => $userEntity->getUsername(),
             'email' => $userEntity->getEmail(),
+            'password' => $userEntity->getPassword(),
             'avatar' => $this->createLinkForUserAvatarImage($userEntity->getAvatar())
          ]
         ]);
