@@ -1,0 +1,9 @@
+{
+    "__table_name__": "users",
+    "__cols__": [
+        [ "username", "" , 150 ],
+        [ "email", "" , 150 ],
+        [ "password", "" , 150 ],
+        [ "avatar", "" , 150 ]
+    ]
+} 
