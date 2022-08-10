@@ -1,5 +1,5 @@
-<?php
-
+h<?php
+iuyhoihjkjhik
 class LoginUser extends ElectroApi {
 
     protected function onDevise() {
