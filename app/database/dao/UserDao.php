@@ -141,4 +141,21 @@ class UserDao extends TableDao {
         }
     } // </***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
 
+    public function getUserWithEmail(string $email): ?UserEntity {
+        $query = QueryBuilder::withQueryType(QueryType::SELECT)
+            ->withTableName(UserEntity::TABLE_NAME)
+            ->columns(['*'])
+            ->whereParams([
+                [UserTableSchema::EMAIL, '=', $this->escape_string($email)]
+            ])
+            ->generate();
+
+        $result = mysqli_query($this->getConnection(), $query);
+
+        if ($result && $result->num_rows >= 1) {
+            return UserFactory::mapFromDatabaseResult(mysqli_fetch_assoc($result));
+        }
+        return null;
+    }
+
 }

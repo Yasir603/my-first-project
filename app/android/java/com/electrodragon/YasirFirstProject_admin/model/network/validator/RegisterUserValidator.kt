@@ -11,8 +11,12 @@ interface RegisterUserValidatorCallbacks {
     fun onUnderMaintenance() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
     fun onBadRequest(badRequest: BadRequest) // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
     fun onUnauthorized() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
+    fun onFailedToSaveImage() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
+    fun onUserWithThisEmailAlreadyExist() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
+    fun onFailedToInsertUserEntity() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
 //    fun onRegisterUserMilestoneCompleted(thing: SomeType, thing2: SomeType)
 }
+
 class RegisterUserValidator {
     companion object {
         fun validate(
@@ -39,15 +43,18 @@ class RegisterUserValidator {
                             ElectroResponseState.UNAUTHORIZED -> {
                                 callbacks.onUnauthorized()
                             }
-//                            ElectroResponseState.COMPROMISED -> {
-//                                callbacks.onDataGotCompromised()
-//                            }
                             ElectroResponseState.FAILURE -> {
-//                                electroResponse.data?.exceptions?.let { exceptions ->
-//                                    exceptions.failedToDoSo?.let {
-//                                        callbacks.onFailedToDoSo()
-//                                    }
-//                                }
+                                electroResponse.data?.exceptions?.let { exceptions ->
+                                    exceptions.failedToSaveImage?.let {
+                                        callbacks.onFailedToSaveImage()
+                                    }
+                                    exceptions.userWithThisEmailAlreadyExist?.let {
+                                        callbacks.onUserWithThisEmailAlreadyExist()
+                                    }
+                                    exceptions.failedToInsertUserEntity?.let {
+                                        callbacks.onFailedToInsertUserEntity()
+                                    }
+                                }
                             }
                             else -> { // OK
                                 electroResponse.data?.let { data ->

@@ -1,27 +1,23 @@
 package com.electrodragon.YasirFirstProject.model.network.validator
 
 import com.electrodragon.YasirFirstProject.model.network.constant.ElectroResponseState
-import com.electrodragon.YasirFirstProject.model.network.response.RegisterUserData
+import com.electrodragon.YasirFirstProject.model.network.response.LoginUserData
 import com.electrodragon.YasirFirstProject.model.network.core.ElectroResponse
 import com.electrodragon.YasirFirstProject.model.network.core.BadRequest
 import retrofit2.Response
 
-interface RegisterUserValidatorCallbacks {
+interface LoginUserValidatorCallbacks {
     fun onResponseUnsuccessful() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
     fun onUnderMaintenance() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
     fun onBadRequest(badRequest: BadRequest) // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
     fun onUnauthorized() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
-    fun onFailedToSaveImage() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
-    fun onUserWithThisEmailAlreadyExist() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
-    fun onFailedToInsertUserEntity() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
-//    fun onRegisterUserMilestoneCompleted(thing: SomeType, thing2: SomeType)
+//    fun onLoginUserMilestoneCompleted(thing: SomeType, thing2: SomeType)
 }
-
-class RegisterUserValidator {
+class LoginUserValidator {
     companion object {
         fun validate(
-            response: Response<ElectroResponse<RegisterUserData>>,
-            callbacks: RegisterUserValidatorCallbacks
+            response: Response<ElectroResponse<LoginUserData>>,
+            callbacks: LoginUserValidatorCallbacks
         ) {
             when {
                 response.isSuccessful -> {
@@ -43,23 +39,20 @@ class RegisterUserValidator {
                             ElectroResponseState.UNAUTHORIZED -> {
                                 callbacks.onUnauthorized()
                             }
+//                            ElectroResponseState.COMPROMISED -> {
+//                                callbacks.onDataGotCompromised()
+//                            }
                             ElectroResponseState.FAILURE -> {
-                                electroResponse.data?.exceptions?.let { exceptions ->
-                                    exceptions.failedToSaveImage?.let {
-                                        callbacks.onFailedToSaveImage()
-                                    }
-                                    exceptions.userWithThisEmailAlreadyExist?.let {
-                                        callbacks.onUserWithThisEmailAlreadyExist()
-                                    }
-                                    exceptions.failedToInsertUserEntity?.let {
-                                        callbacks.onFailedToInsertUserEntity()
-                                    }
-                                }
+//                                electroResponse.data?.exceptions?.let { exceptions ->
+//                                    exceptions.failedToDoSo?.let {
+//                                        callbacks.onFailedToDoSo()
+//                                    }
+//                                }
                             }
                             else -> { // OK
                                 electroResponse.data?.let { data ->
 //                                    data.areThingsWorked?.let {
-//                                        callbacks.onRegisterUserMilestoneCompleted(thing1, thing2)
+//                                        callbacks.onLoginUserMilestoneCompleted(thing1, thing2)
 //                                    }
                                 }
                             }

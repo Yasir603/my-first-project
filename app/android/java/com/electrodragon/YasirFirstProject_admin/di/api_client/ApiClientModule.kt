@@ -16,6 +16,7 @@ class ApiClientModule {
     @Singleton
     fun provideApiClient(retrofit: Retrofit): ApiClient {
         return ApiClient(
+            retrofit.create(RegisterUserService::class.java)
         )
     }
 }

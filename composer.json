@@ -5,6 +5,7 @@
         "jordanbrauer/unit-converter": "^0.8.7",
         "paragraph1/php-fcm": "^0.7.0",
         "ramsey/uuid": "^4.2",
-        "phpseclib/phpseclib": "^3.0"
+        "phpseclib/phpseclib": "^3.0",
+      "ext-mysqli": "*"
     }
 }

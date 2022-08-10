@@ -1,5 +1,6 @@
 <?php
-use carbon/Carbon;
+
+use Carbon\Carbon;
 use Ramsey\Uuid\Uuid;
 
 class RegisterUser extends ElectroApi {
@@ -10,7 +11,7 @@ class RegisterUser extends ElectroApi {
     const AVATAR = 'avatar';
 
 
-    protected function onAssemble(){
+    protected function onAssemble() {
       $this->killWithBadRequestExceptionIfTextualParamIsMissing(self::USERNAME);
       $this->killWithBadRequestExceptionIfTextualParamIsMissing(self::EMAIL);
       $this->killWithBadRequestExceptionIfTextualParamIsMissing(self::PASSWORD);
@@ -47,8 +48,7 @@ class RegisterUser extends ElectroApi {
                   $_POST[self::USERNAME],
                   $_POST[self::EMAIL],
                   $_POST[self::PASSWORD],
-                  $generatedName
-
+                  $generatedName,
                   $register_time,
                   $register_time
               )
@@ -63,7 +63,7 @@ class RegisterUser extends ElectroApi {
             'uid' => $userEntity->getUid(),
             'username' => $userEntity->getUsername(),
             'email' => $userEntity->getEmail(),
-            'avatar' => $this->createLinkForUserAvatarImage($userAvatarEntity->getAvatar())
+            'avatar' => $this->createLinkForUserAvatarImage($userEntity->getAvatar())
          ]
         ]);
     }
