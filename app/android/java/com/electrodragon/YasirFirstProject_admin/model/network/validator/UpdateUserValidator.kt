@@ -11,8 +11,11 @@ interface UpdateUserValidatorCallbacks {
     fun onUnderMaintenance() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
     fun onBadRequest(badRequest: BadRequest) // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
     fun onUnauthorized() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
+    fun onNoUserFound() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
+    fun onFailedToUpdate() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
 //    fun onUpdateUserMilestoneCompleted(thing: SomeType, thing2: SomeType)
 }
+
 class UpdateUserValidator {
     companion object {
         fun validate(
@@ -39,15 +42,15 @@ class UpdateUserValidator {
                             ElectroResponseState.UNAUTHORIZED -> {
                                 callbacks.onUnauthorized()
                             }
-//                            ElectroResponseState.COMPROMISED -> {
-//                                callbacks.onDataGotCompromised()
-//                            }
-                            ElectroResponseState.FAILURE -> {
-//                                electroResponse.data?.exceptions?.let { exceptions ->
-//                                    exceptions.failedToDoSo?.let {
-//                                        callbacks.onFailedToDoSo()
-//                                    }
-//                                }
+                            ElectroResponseState.COMPROMISED -> {
+                                electroResponse.data?.exceptions?.let { exceptions ->
+                                    exceptions.noUserFound?.let {
+                                        callbacks.onNoUserFound()
+                                    }
+                                    exceptions.failedToUpdate?.let {
+                                        callbacks.onFailedToUpdate()
+                                    }
+                                }
                             }
                             else -> { // OK
                                 electroResponse.data?.let { data ->

@@ -1,0 +1,8 @@
+{
+    "__table_name__": "posts",
+    "__cols__": [
+        [ "user_uid", "" , 150 ],
+        [ "video", "" , 150 ],
+        [ "text", "" , 500 ]
+    ]
+} 

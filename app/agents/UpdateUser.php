@@ -7,19 +7,43 @@ class UpdateUser extends ElectroApi {
     const USERNAME = 'username';
     const EMAIL = 'email';
     const PASSWORD = 'password';
-    const AVATAR = 'avatar';
 
 
     protected function onAssemble() {
-    $this->killWithBadRequestExceptionIfTextualParamIsMissing(self::USER_UID);
-    $this->killWithBadRequestExceptionIfTextualParamIsMissing(self::USERNAME);
-    $this->killWithBadRequestExceptionIfTextualParamIsMissing(self::EMAIL);
-    $this->killWithBadRequestExceptionIfTextualParamIsMissing(self::PASSWORD);
-    $this->killWithBadRequestExceptionIfMultipartParamIsMissing(self::AVATAR);
+        $this->killWithBadRequestExceptionIfTextualParamIsMissing(self::USER_UID);
+        $this->killWithBadRequestExceptionIfTextualParamIsMissing(self::USERNAME);
+        $this->killWithBadRequestExceptionIfTextualParamIsMissing(self::EMAIL);
+        $this->killWithBadRequestExceptionIfTextualParamIsMissing(self::PASSWORD);
     }
+
     protected function onDevise() {
+
+        $userEntity = $this->killCompromisedIfNullElseGetUserEntity(
+            $this->getAppDB()->getUserDao()->getUserWithUid($_POST[self::USER_UID]),
+            null ,
+            "no_user_found"
+        );
+
+        $userEntity->setUsername($_POST[self::USERNAME]);
+        $userEntity->setEmail($_POST[self::EMAIL]);
+        $userEntity->setPassword($_POST[self::PASSWORD]);
+        $userEntity->setUpdatedAt(Carbon::now());
+
+        $this->killCompromisedIfNullElseGetUserEntity(
+            $this->getAppDB()->getUserDao()->updateUser($userEntity),
+            null ,
+            "failed_to_update"
+        );
+
         $this->resSendOK([
-            'eevee' => 'Hi i\'m UpdateUser agent.'
+            'user' => [
+                'uid' => $userEntity->getUid(),
+                'username' => $userEntity->getUsername(),
+                'email' => $userEntity->getEmail(),
+                'password' => $userEntity->getPassword(),
+                'avatar' => $this->createLinkForUserAvatarImage($userEntity->getAvatar())
+            ]
+
         ]);
     }
 }

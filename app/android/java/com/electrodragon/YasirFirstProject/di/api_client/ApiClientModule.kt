@@ -16,7 +16,11 @@ class ApiClientModule {
     @Singleton
     fun provideApiClient(retrofit: Retrofit): ApiClient {
         return ApiClient(
-            retrofit.create(RegisterUserService::class.java)
+            retrofit.create(DeleteUserService::class.java),
+            retrofit.create(FetchUsersService::class.java),
+            retrofit.create(LoginUserService::class.java),
+            retrofit.create(RegisterUserService::class.java),
+            retrofit.create(UpdateUserService::class.java)
         )
     }
 }

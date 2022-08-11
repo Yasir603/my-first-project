@@ -158,7 +158,6 @@ class UserDao extends TableDao {
         return null;
     }
 
-
     public function getUserWithPassword(string $password): ?UserEntity {
         $query = QueryBuilder::withQueryType(QueryType::SELECT)
             ->withTableName(UserEntity::TABLE_NAME)
@@ -175,4 +174,5 @@ class UserDao extends TableDao {
         }
         return null;
     }
+
 }

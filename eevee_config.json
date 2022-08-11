@@ -3,7 +3,7 @@
         "__hostname__": "localhost",
         "__username__": "root",
         "__password__": "",
-        "__database__": "electro_db"
+        "__database__": "yasir_db"
     },
     "__production_database__": {
         "__hostname__": "localhost",

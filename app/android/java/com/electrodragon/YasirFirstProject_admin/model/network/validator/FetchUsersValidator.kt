@@ -13,6 +13,7 @@ interface FetchUsersValidatorCallbacks {
     fun onUnauthorized() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
 //    fun onFetchUsersMilestoneCompleted(thing: SomeType, thing2: SomeType)
 }
+
 class FetchUsersValidator {
     companion object {
         fun validate(
@@ -38,16 +39,6 @@ class FetchUsersValidator {
                             }
                             ElectroResponseState.UNAUTHORIZED -> {
                                 callbacks.onUnauthorized()
-                            }
-//                            ElectroResponseState.COMPROMISED -> {
-//                                callbacks.onDataGotCompromised()
-//                            }
-                            ElectroResponseState.FAILURE -> {
-//                                electroResponse.data?.exceptions?.let { exceptions ->
-//                                    exceptions.failedToDoSo?.let {
-//                                        callbacks.onFailedToDoSo()
-//                                    }
-//                                }
                             }
                             else -> { // OK
                                 electroResponse.data?.let { data ->

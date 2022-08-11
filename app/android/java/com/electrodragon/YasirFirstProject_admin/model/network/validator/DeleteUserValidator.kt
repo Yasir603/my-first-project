@@ -11,8 +11,10 @@ interface DeleteUserValidatorCallbacks {
     fun onUnderMaintenance() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
     fun onBadRequest(badRequest: BadRequest) // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
     fun onUnauthorized() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
+    fun onNoUserFound() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
 //    fun onDeleteUserMilestoneCompleted(thing: SomeType, thing2: SomeType)
 }
+
 class DeleteUserValidator {
     companion object {
         fun validate(
@@ -39,15 +41,12 @@ class DeleteUserValidator {
                             ElectroResponseState.UNAUTHORIZED -> {
                                 callbacks.onUnauthorized()
                             }
-//                            ElectroResponseState.COMPROMISED -> {
-//                                callbacks.onDataGotCompromised()
-//                            }
-                            ElectroResponseState.FAILURE -> {
-//                                electroResponse.data?.exceptions?.let { exceptions ->
-//                                    exceptions.failedToDoSo?.let {
-//                                        callbacks.onFailedToDoSo()
-//                                    }
-//                                }
+                            ElectroResponseState.COMPROMISED -> {
+                                electroResponse.data?.exceptions?.let { exceptions ->
+                                    exceptions.noUserFound?.let {
+                                        callbacks.onNoUserFound()
+                                    }
+                                }
                             }
                             else -> { // OK
                                 electroResponse.data?.let { data ->

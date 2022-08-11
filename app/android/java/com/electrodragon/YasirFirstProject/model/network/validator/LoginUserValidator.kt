@@ -11,8 +11,11 @@ interface LoginUserValidatorCallbacks {
     fun onUnderMaintenance() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
     fun onBadRequest(badRequest: BadRequest) // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
     fun onUnauthorized() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
+    fun onInvalidEmail() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
+    fun onDataCompromisedUserEntityNotFound() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
 //    fun onLoginUserMilestoneCompleted(thing: SomeType, thing2: SomeType)
 }
+
 class LoginUserValidator {
     companion object {
         fun validate(
@@ -39,15 +42,15 @@ class LoginUserValidator {
                             ElectroResponseState.UNAUTHORIZED -> {
                                 callbacks.onUnauthorized()
                             }
-//                            ElectroResponseState.COMPROMISED -> {
-//                                callbacks.onDataGotCompromised()
-//                            }
-                            ElectroResponseState.FAILURE -> {
-//                                electroResponse.data?.exceptions?.let { exceptions ->
-//                                    exceptions.failedToDoSo?.let {
-//                                        callbacks.onFailedToDoSo()
-//                                    }
-//                                }
+                            ElectroResponseState.COMPROMISED -> {
+                                electroResponse.data?.exceptions?.let { exceptions ->
+                                    exceptions.invalidEmail?.let {
+                                        callbacks.onInvalidEmail()
+                                    }
+                                    exceptions.dataCompromisedUserEntityNotFound?.let {
+                                        callbacks.onDataCompromisedUserEntityNotFound()
+                                    }
+                                }
                             }
                             else -> { // OK
                                 electroResponse.data?.let { data ->
