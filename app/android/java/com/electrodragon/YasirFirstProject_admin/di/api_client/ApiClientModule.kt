@@ -16,6 +16,7 @@ class ApiClientModule {
     @Singleton
     fun provideApiClient(retrofit: Retrofit): ApiClient {
         return ApiClient(
+            retrofit.create(AddImageService::class.java),
             retrofit.create(CreatePostService::class.java),
             retrofit.create(DeleteUserService::class.java),
             retrofit.create(FetchUsersService::class.java),

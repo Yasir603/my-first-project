@@ -1,0 +1,7 @@
+{
+    "__table_name__": "images",
+    "__cols__": [
+        [ "image", "" , 150 ],
+        [ "user_uid", "" , 150 ]
+    ]
+} 
