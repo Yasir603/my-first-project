@@ -12,6 +12,7 @@ object CreatePostResponseClasses {
     data class Exceptions( // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
         @SerializedName(ApiResponseConstant.MISSING_PARAM) val missingParam: String?,
         @SerializedName(ApiResponseConstant.INVALID_VALUE_OF_PARAM) val invalidValueOfParam: String?,
-        @SerializedName("some_exception_name") val exceptionName: Boolean?
+        @SerializedName("failed_to_insert_user_Post") val failedToInsertUserPost: Boolean?,
+        @SerializedName("no_user_found") val noUserFound: Boolean?
     ) // </***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
 }

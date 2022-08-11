@@ -11,8 +11,11 @@ interface CreatePostValidatorCallbacks {
     fun onUnderMaintenance() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
     fun onBadRequest(badRequest: BadRequest) // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
     fun onUnauthorized() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
+    fun onFailedToInsertUserPost() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
+    fun onNoUserFound() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
 //    fun onCreatePostMilestoneCompleted(thing: SomeType, thing2: SomeType)
 }
+
 class CreatePostValidator {
     companion object {
         fun validate(
@@ -39,15 +42,19 @@ class CreatePostValidator {
                             ElectroResponseState.UNAUTHORIZED -> {
                                 callbacks.onUnauthorized()
                             }
-//                            ElectroResponseState.COMPROMISED -> {
-//                                callbacks.onDataGotCompromised()
-//                            }
+                            ElectroResponseState.COMPROMISED -> {
+                                electroResponse.data?.exceptions?.let { exceptions ->
+                                    exceptions.noUserFound?.let {
+                                        callbacks.onNoUserFound()
+                                    }
+                                }
+                            }
                             ElectroResponseState.FAILURE -> {
-//                                electroResponse.data?.exceptions?.let { exceptions ->
-//                                    exceptions.failedToDoSo?.let {
-//                                        callbacks.onFailedToDoSo()
-//                                    }
-//                                }
+                                electroResponse.data?.exceptions?.let { exceptions ->
+                                    exceptions.failedToInsertUserPost?.let {
+                                        callbacks.onFailedToInsertUserPost()
+                                    }
+                                }
                             }
                             else -> { // OK
                                 electroResponse.data?.let { data ->

@@ -3,7 +3,7 @@ use Carbon\Carbon;
 use Ramsey\Uuid\Uuid;
 class CreatePost extends ElectroApi {
 
-       const USER_UID = 'username';
+       const USER_UID = 'user_uid';
        const VIDEO = 'video';
        const TEXT = 'text';
 
@@ -19,21 +19,21 @@ class CreatePost extends ElectroApi {
       "no_user_found"
     );
 
-        $extArray = ["mp4","avi","3gp","mov","mpeg"];
+        $extArray = ["mp4","avi","3gp","mov","mpeg","webm"];
 
-        $fileInfo = pathinfo($_FILES[VIDEO]['name']);
+        $fileInfo = pathinfo($_FILES[self::VIDEO]['name']);
 
-        $tmp = explode(".", $_FILES[VIDEO]['name']);
+        $tmp = explode(".", $_FILES[self::VIDEO]['name']);
 
-        $size = ($_FILES[VIDEO]["size"]/10).'MB';
+        $size = ($_FILES[self::VIDEO]["size"]/10).'MB';
 
         $newName = time() . rand(0, 99999) . "." . end($tmp);
-        if ($_FILES[VIDEO]["size"] > 10485760) {
+        if ($_FILES[self::VIDEO]["size"] > 10485760) {
 
             echo json_encode(array('status' => 'error', 'size' => 'File size is greater then 10 MB TRY AGAIN.'));
         }
         else {
-              if (! move_uploaded_file($_FILES[VIDEO]['tmp_name'], $this->getStatusVideoDirPath . $newName)) {
+              if (! move_uploaded_file($_FILES[self::VIDEO]['tmp_name'], $this->getUserAvatarImageDirPath() . $newName)) {
               echo json_encode(array('status' => 'error', 'msg' => 'File could not be uploaded.'));
               die();
               }
@@ -45,9 +45,8 @@ class CreatePost extends ElectroApi {
                 new PostEntity(
                     Uuid::uuid4()->toString(),
                     $_POST[self::USER_UID],
-                    $_POST[self::VIDEO],
+                    $newName,
                     $_POST[self::TEXT],
-                    $generatedName,
                     $Post_time,
                     $Post_time
                 )
@@ -60,6 +59,7 @@ class CreatePost extends ElectroApi {
             'user_uid' => $postEntity->getUserUid(),
             'text' => $postEntity->getText(),
             'video' => $this->createLinkForStatusVideo($postEntity->getVideo())
+              ]
         ]);
     }
 }
