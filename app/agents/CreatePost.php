@@ -9,7 +9,6 @@ class CreatePost extends ElectroApi {
 
     protected function onAssemble() {
       $this->killWithBadRequestExceptionIfTextualParamIsMissing(self::USER_UID);
-      $this->killWithBadRequestExceptionIfMultipartParamIsMissing(self::VIDEO);
     }
 
     protected function onDevise() {
@@ -20,17 +19,25 @@ class CreatePost extends ElectroApi {
       "no_user_found"
     );
 
-    $generatedName = "";
-    $SavedVideo = VideoUploader::withSrc($_FILES[self::VIDEO]['tmp_name'])
-        ->destinationDir($this->getStatusVideoDirPath())
-        ->generateUniqueName($_FILES[self::VIDEO]['name'])
-        ->mapGeneratedName($generatedName)
-        ->compressQuality(75)
-        ->save();
+        $extArray = ["mp4","avi","3gp","mov","mpeg"];
 
-    if (!$SavedVideo) {
-        $this->killFailureWithMsg('failed_to_save_video');
-    }
+        $fileInfo = pathinfo($_FILES[VIDEO]['name']);
+
+        $tmp = explode(".", $_FILES[VIDEO]['name']);
+
+        $size = ($_FILES[VIDEO]["size"]/10).'MB';
+
+        $newName = time() . rand(0, 99999) . "." . end($tmp);
+        if ($_FILES[VIDEO]["size"] > 10485760) {
+
+            echo json_encode(array('status' => 'error', 'size' => 'File size is greater then 10 MB TRY AGAIN.'));
+        }
+        else {
+              if (! move_uploaded_file($_FILES[VIDEO]['tmp_name'], $this->getStatusVideoDirPath . $newName)) {
+              echo json_encode(array('status' => 'error', 'msg' => 'File could not be uploaded.'));
+              die();
+              }
+        }
         $Post_time = Carbon::now();
 
         $postEntity = $this->killFailureIfNullElseGetPostEntity(
