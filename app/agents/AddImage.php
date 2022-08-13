@@ -24,42 +24,43 @@ class AddImage extends ElectroApi {
 
 
         $extension=array('jpeg','jpg','png','gif');
-	      foreach ($_FILES[self::IMAGE]['tmp_name'] as $key => $value) {
-	    	$filename=$_FILES[self::IMAGE]['name'][$key];
-	    	$filename_tmp=$_FILES[self::IMAGE]['tmp_name'][$key];
-	    	echo '<br>';
-	    	$ext=pathinfo($filename,PATHINFO_EXTENSION);
 
-	    	$finalimg='';
-	    	if(in_array($ext,$extension))
-		    {
-		     	if(!file_exists($this->getUserAvatarImageDirPath() .$filename))
-		    	{
-		        	move_uploaded_file($filename_tmp, $this->getUserAvatarImageDirPath() .$filename);
-		        	$finalimg=$filename;
-		     	}else
-		    	{
-			     	 $filename=str_replace('.','-',basename($filename,$ext));
-				     $newfilename=$filename.time().".".$ext;
-				     move_uploaded_file($filename_tmp, $this->getUserAvatarImageDirPath() .$newfilename);
-				     $finalimg=$newfilename;
-		    	}
+	      foreach ($_FILES[self::IMAGE] as $key ) {
 
-			        //insert
-              $this->getAppDB()->getImageDao()->insertImage(
-              new ImageEntity(
-              Uuid::uuid4()->toString(),
-              $finalimg,
-              $_POST[self::USER_UID],
-              Carbon::now(),
-              Carbon::now()
-              ));
+              $generatedName = "";
+              $isImageSaved = ImageUploader::withSrc($_FILES[self::IMAGE]['tmp_name'])
+                  ->destinationDir($this->getUserAvatarImageDirPath())
+                  ->generateUniqueName($_FILES[self::IMAGE]['name'])
+                  ->mapGeneratedName($generatedName)
+                  ->compressQuality(75)
+                  ->save();
+
+              if (!$isImageSaved) {
+                  $this->killFailureWithMsg('failed_to_save_image');
+              }
+
+
+              //insert
+
+
+                $this->killFailureIfNullElseGetImageEntity(
+                    $this->getAppDB()->getImageDao()->insertImage(
+                        new ImageEntity(
+                            Uuid::uuid4()->toString(),
+                            $generatedName,
+                            $_POST[self::USER_UID],
+                            Carbon::now(),
+                            Carbon::now()
+                        )),
+                    null ,
+                    "failed_to_insert"
+                );
 	        }
 
 
 
 
-          }
+
 
 
         $this->resSendOK([
