@@ -15,16 +15,16 @@ class LoginUser extends ElectroApi {
     protected function onDevise() {
 
 
-      $userEntity =  $this->killCompromisedIfNullElseGetUserEntity(
-            $this->getAppDB()->getUserDao()->getUserWithEmail($_POST[self::EMAIL]),
-          null,
-            "invalid_email"
+        $this->killCompromisedIfNullElseGetUserEntity(
+               $this->getAppDB()->getUserDao()->getUserWithEmail($_POST[self::EMAIL]),
+              null,
+              "invalid_email"
 
         );
 
         $userEntity =   $this->killCompromisedIfNullElseGetUserEntity(
             $this->getAppDB()->getUserDao()->getUserWithPassword($_POST[self::PASSWORD]),
-               null,
+            null,
             "wrong_password",
            );
 

@@ -3,8 +3,9 @@
 class FetchUsers extends ElectroApi {
 
     protected function onDevise() {
+
       $userEntities = $this->getAppDB()->getUserDao()->getAllUser();
-         $users = [];
+      $users = [];
 
          foreach ($userEntities as $userEntity) {
 
@@ -16,11 +17,9 @@ class FetchUsers extends ElectroApi {
                  'password' => $userEntity->getPassword(),
                  'image' => $this->createLinkForUserAvatarImage($userEntity->getAvatar()),
                  'registration_time' => $userEntity->getCreatedAt()
-             ]);
+             ]
+           );
          }
-
-
-
 
 
         $this->resSendOK([

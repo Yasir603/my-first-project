@@ -23,7 +23,6 @@ class AddImage extends ElectroApi {
         );
 
 
-        $extension=array('jpeg','jpg','png','gif');
         for ($i=0;$i < count($_FILES['image']['name']);$i++) {
             $generatedName = "";
 

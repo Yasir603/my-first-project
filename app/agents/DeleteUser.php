@@ -9,11 +9,12 @@ class DeleteUser extends ElectroApi {
     }
 
     protected function onDevise() {
+
         $userEntity = $this->killCompromisedIfNullElseGetUserEntity(
-        $this->getAppDB()->getUserDao()->getUserWithUid($_POST[self::USER_UID]),
-        null ,
-        "no_user_found"
-    );
+            $this->getAppDB()->getUserDao()->getUserWithUid($_POST[self::USER_UID]),
+            null ,
+            "no_user_found"
+         );
 
         $this->getAppDB()->getUserDao()->deleteUser($userEntity);
 
