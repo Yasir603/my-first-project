@@ -52,9 +52,6 @@ class AddImage extends ElectroApi {
         }
 
 
-
-
-
         $this->resSendOK([
             'image' => 'images save successfully.'
         ]);

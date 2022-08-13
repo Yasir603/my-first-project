@@ -8,7 +8,6 @@ class UpdateUser extends ElectroApi {
     const EMAIL = 'email';
     const PASSWORD = 'password';
 
-
     protected function onAssemble() {
         $this->killWithBadRequestExceptionIfTextualParamIsMissing(self::USER_UID);
         $this->killWithBadRequestExceptionIfTextualParamIsMissing(self::USERNAME);

@@ -2,8 +2,6 @@
 
 class LoginUser extends ElectroApi {
 
-
-
     const EMAIL = 'email';
     const PASSWORD = 'password';
 

@@ -57,7 +57,6 @@ class RegisterUser extends ElectroApi {
       );
 
 
-
         $this->resSendOK([
           'user' => [
             'uid' => $userEntity->getUid(),

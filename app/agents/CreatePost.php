@@ -1,6 +1,8 @@
 <?php
+
 use Carbon\Carbon;
 use Ramsey\Uuid\Uuid;
+
 class CreatePost extends ElectroApi {
 
        const USER_UID = 'user_uid';
