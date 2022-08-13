@@ -13,7 +13,6 @@ object AddImageResponseClasses {
         @SerializedName(ApiResponseConstant.MISSING_PARAM) val missingParam: String?,
         @SerializedName(ApiResponseConstant.INVALID_VALUE_OF_PARAM) val invalidValueOfParam: String?,
         @SerializedName("no_user_found") val noUserFound: Boolean?,
-        @SerializedName("failed_to_save_image") val failedToSaveImage: Boolean?,
-        @SerializedName("failed_to_insert") val failedToInsert: Boolean?
+        @SerializedName("image_entity_not_found") val imageEntityNotFound: Boolean?
     ) // </***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
 }

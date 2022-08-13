@@ -12,8 +12,7 @@ interface AddImageValidatorCallbacks {
     fun onBadRequest(badRequest: BadRequest) // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
     fun onUnauthorized() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
     fun onNoUserFound() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
-    fun onFailedToSaveImage() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
-    fun onFailedToInsert() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
+    fun onImageEntityNotFound() // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
 //    fun onAddImageMilestoneCompleted(thing: SomeType, thing2: SomeType)
 }
 
@@ -48,11 +47,8 @@ class AddImageValidator {
                                     exceptions.noUserFound?.let {
                                         callbacks.onNoUserFound()
                                     }
-                                    exceptions.failedToSaveImage?.let {
-                                        callbacks.onFailedToSaveImage()
-                                    }
-                                    exceptions.failedToInsert?.let {
-                                        callbacks.onFailedToInsert()
+                                    exceptions.imageEntityNotFound?.let {
+                                        callbacks.onImageEntityNotFound()
                                     }
                                 }
                             }

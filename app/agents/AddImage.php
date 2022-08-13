@@ -24,40 +24,33 @@ class AddImage extends ElectroApi {
 
 
         $extension=array('jpeg','jpg','png','gif');
+        for ($i=0;$i < count($_FILES['image']['name']);$i++) {
+            $generatedName = "";
 
-	      foreach ($_FILES[self::IMAGE] as $key => $val ) {
+            $isImageSaved = ImageUploader::withSrc($_FILES['image']['tmp_name'][$i])
+                ->destinationDir($this->getUserAvatarImageDirPath())
+                ->generateUniqueName($_FILES['image']['name'][$i])
+                ->mapGeneratedName($generatedName)
+                ->compressQuality(75)
+                ->save();
 
-              $generatedName = "";
-              $isImageSaved = ImageUploader::withSrc($_FILES[self::IMAGE]['tmp_name'][$key])
-                  ->destinationDir($this->getUserAvatarImageDirPath())
-                  ->generateUniqueName($_FILES[self::IMAGE]['name'][$key])
-                  ->mapGeneratedName($generatedName)
-                  ->compressQuality(75)
-                  ->save();
+            if (!$isImageSaved) {
+                die("failed to save image");
+            }
 
-              if (!$isImageSaved) {
-                  $this->killFailureWithMsg('failed_to_save_image');
-              }
+            $this->killFailureIfNullElseGetImageEntity(
+                $this->getAppDB()->getImageDao()->insertImage(
+                    new ImageEntity(
+                        Uuid::uuid4()->toString(),
+                        $generatedName,
+                        $_POST[self::USER_UID],
+                        Carbon::now(),
+                        Carbon::now()
+                    )
+                )
+            );
 
-
-              //insert
-
-
-                $this->killFailureIfNullElseGetImageEntity(
-                    $this->getAppDB()->getImageDao()->insertImage(
-                        new ImageEntity(
-                            Uuid::uuid4()->toString(),
-                            $generatedName,
-                            $_POST[self::USER_UID],
-                            Carbon::now(),
-                            Carbon::now()
-                        )),
-                    null ,
-                    "failed_to_insert"
-                );
-	        }
-
-
+        }
 
 
 
