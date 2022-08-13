@@ -22,34 +22,48 @@ class AddImage extends ElectroApi {
             $this->getAppDB()->getUserDao()->getUserWithUid($_POST[self::USER_UID])
         );
 
-        for( $i=0;$i<3;$i++) {
-            $generatedName = "";
-            $isImageSaved = ImageUploader::withSrc($_FILES[self::IMAGE]['tmp_name'][$i])
-                ->destinationDir($this->getUserAvatarImageDirPath())
-                ->generateUniqueName($_FILES[self::IMAGE]['name'][$i])
-                ->mapGeneratedName($generatedName)
-                ->compressQuality(75)
-                ->save();
 
-            if (!$isImageSaved) {
-                $this->killFailureWithMsg('failed_to_save_image');
-            }
+        $extension=array('jpeg','jpg','png','gif');
+	      foreach ($_FILES[self::IMAGE]['tmp_name'] as $key => $value) {
+	    	$filename=$_FILES[self::IMAGE]['name'][$key];
+	    	$filename_tmp=$_FILES[self::IMAGE]['tmp_name'][$key];
+	    	echo '<br>';
+	    	$ext=pathinfo($filename,PATHINFO_EXTENSION);
+
+	    	$finalimg='';
+	    	if(in_array($ext,$extension))
+		    {
+		     	if(!file_exists($this->getUserAvatarImageDirPath() .$filename))
+		    	{
+		        	move_uploaded_file($filename_tmp, $this->getUserAvatarImageDirPath() .$filename);
+		        	$finalimg=$filename;
+		     	}else
+		    	{
+			     	 $filename=str_replace('.','-',basename($filename,$ext));
+				     $newfilename=$filename.time().".".$ext;
+				     move_uploaded_file($filename_tmp, $this->getUserAvatarImageDirPath() .$newfilename);
+				     $finalimg=$newfilename;
+		    	}
+
+			        //insert
+              $this->getAppDB()->getImageDao()->insertImage(
+              new ImageEntity(
+              Uuid::uuid4()->toString(),
+              $finalimg,
+              $_POST[self::USER_UID],
+              Carbon::now(),
+              Carbon::now()
+              ));
+	        }
 
 
-            $this->getAppDB()->getImageDao()->insertImage(
-                new ImageEntity(
-                    Uuid::uuid4()->toString(),
-                    $generatedName,
-                    $_POST[self::USER_UID],
-                    Carbon::now(),
-                    Carbon::now()
-                )
-            );
-        }
+
+
+          }
 
 
         $this->resSendOK([
-            'eevee' => 'Hi i\'m AddImage agent.'
+            'image' => 'images save successfully.'
         ]);
     }
 }
