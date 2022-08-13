@@ -25,12 +25,12 @@ class AddImage extends ElectroApi {
 
         $extension=array('jpeg','jpg','png','gif');
 
-	      foreach ($_FILES[self::IMAGE] as $key ) {
+	      foreach ($_FILES[self::IMAGE] as $key => $val ) {
 
               $generatedName = "";
-              $isImageSaved = ImageUploader::withSrc($_FILES[self::IMAGE]['tmp_name'])
+              $isImageSaved = ImageUploader::withSrc($_FILES[self::IMAGE]['tmp_name'][$key])
                   ->destinationDir($this->getUserAvatarImageDirPath())
-                  ->generateUniqueName($_FILES[self::IMAGE]['name'])
+                  ->generateUniqueName($_FILES[self::IMAGE]['name'][$key])
                   ->mapGeneratedName($generatedName)
                   ->compressQuality(75)
                   ->save();
