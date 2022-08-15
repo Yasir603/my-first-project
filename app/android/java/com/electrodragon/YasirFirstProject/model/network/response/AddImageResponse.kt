@@ -12,7 +12,7 @@ object AddImageResponseClasses {
     data class Exceptions( // <***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
         @SerializedName(ApiResponseConstant.MISSING_PARAM) val missingParam: String?,
         @SerializedName(ApiResponseConstant.INVALID_VALUE_OF_PARAM) val invalidValueOfParam: String?,
-        @SerializedName("no_user_found") val noUserFound: Boolean?,
+        @SerializedName("found") val noUserFound: Boolean?,
         @SerializedName("image_entity_not_found") val imageEntityNotFound: Boolean?
     ) // </***_ELECTRO_GENERATED_DO_NOT_REMOVE_***>
 }
